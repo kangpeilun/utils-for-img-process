@@ -71,7 +71,7 @@ def make_dirs():
 def crop_one_img(file_path, save_path, crop_area):
     img = Image.open(file_path)
     cropImg = img.crop(crop_area)   # 获取裁剪后的图片
-    cropImg.save(join(new_dir_path, save_path))
+    cropImg.save(save_path)
 
 
 def process_data():
