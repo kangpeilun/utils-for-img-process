@@ -16,11 +16,17 @@ from concurrent.futures import ThreadPoolExecutor
 
 
 # ============ config =============
+IF_RESIZE = True          # 裁剪前是否对图像进行resize
+RESIZE = 286
 CROP = (256, 256)         # 裁剪的大小 对应 h, w
-DIR_NAME = 'val-ori'      # 原数据存放的文件夹名称
-NEW_DIR_NAME = 'val'
+DIR_NAME = 'test-ori'      # 原数据存放的文件夹名称
+NEW_DIR_NAME = 'test'
 CROP_NUM_EACH_PIC = 5     # 每张图片上随机裁剪多少张图片
+
+SEED = 0                  # 随机种子，使得每次划分结果都一致
 THREAD = 10               # 启用多线程划分数据, 线程数
+
+random.seed(SEED)
 # ============ config =============
 DATA_DIR = join(os.path.dirname(os.path.realpath(__file__)), DIR_NAME)   # 获取 原始 数据存放文件夹完整路径
 NEW_DIR = join(os.path.dirname(os.path.realpath(__file__)), NEW_DIR_NAME)   # 获取 新生成 数据存放文件夹完整路径
@@ -70,8 +76,11 @@ def make_dirs():
 
 def crop_one_img(file_path, save_path, crop_area):
     img = Image.open(file_path)
-    cropImg = img.crop(crop_area)   # 获取裁剪后的图片
-    cropImg.save(save_path)
+    if IF_RESIZE:   # 缩放
+        img = img.resize((RESIZE, RESIZE), Image.BILINEAR)
+
+    img = img.crop(crop_area)   # 获取裁剪后的图片
+    img.save(save_path)
 
 
 def process_data():
@@ -79,10 +88,13 @@ def process_data():
     h, w = get_img_size()   # 获取图片尺寸
     bar = tqdm(range(1, CROP_NUM_EACH_PIC+1), total=CROP_NUM_EACH_PIC, ascii=True)
     for crop_num in bar:
+        if IF_RESIZE:
+            h, w = RESIZE, RESIZE       # 启用resize，修改图片的高 宽
         crop_range_h, crop_range_w = h - CROP[0], w - CROP[1]  # 获取可以进行裁剪的区域,防止裁剪时越界
         x, y = random.randint(0, crop_range_h), random.randint(0, crop_range_w)  # 产生随机左上角裁剪坐标点
         crop_area = (x, y, x + CROP[0], y + CROP[1])  # 获取被裁减区域坐标
-        bar.set_description('Crop_size:{}\tCrop_area:{}'.format(CROP, crop_area))
+
+        bar.set_description('{}\tCrop_size:{}\tCrop_area:{}'.format(NEW_DIR, CROP, crop_area))
 
         for idx, (ori_dir_path, new_dir_path) in enumerate(zip(ori_list_dir, new_dir_list)):  # 一组一组的数据文件夹进行裁剪
             '''所有的子文件夹中的数据都在 相同的 crop_area 中被裁剪一次，总共重复CROP_NUM_EACH_PIC次
