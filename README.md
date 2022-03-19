@@ -16,9 +16,16 @@
 `子文件夹的数量可以和我不一样，代码会自动处理`
 ```python
 # ============ config =============
+IF_RESIZE = True          # 裁剪前是否对图像进行resize
+RESIZE = 286
 CROP = (256, 256)         # 裁剪的大小 对应 h, w
-DIR_NAME = 'val-ori'      # 原数据存放的文件夹名称
-NEW_DIR_NAME = 'val'
+DIR_NAME = 'test-ori'      # 原数据存放的文件夹名称
+NEW_DIR_NAME = 'test'
 CROP_NUM_EACH_PIC = 5     # 每张图片上随机裁剪多少张图片
+
+SEED = 0                  # 随机种子，使得每次划分结果都一致
 THREAD = 10               # 启用多线程划分数据, 线程数
+
+random.seed(SEED)
+# ============ config =============
 ```
