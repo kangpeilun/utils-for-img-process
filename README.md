@@ -46,4 +46,5 @@ positions = [
 predictions = [class_id1, class_id2, ...]   # 预测类别的标签
 ```
 效果图
+
 ![Indian](https://user-images.githubusercontent.com/57496061/166199733-6799364e-c89f-43e3-bae2-e42e74ceb9d4.png)
