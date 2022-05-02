@@ -9,9 +9,10 @@ def check_dir(dir_path):
 def colors_per_class(data='Indian'):
     '''
     保存不同数据集每种类别的颜色
-    :param data: ['Indian', 'Pavia', 'Houston']
+    :param data: ['Indian', 'Pavia', 'Houston'] 换成你自己的数据集名称
     :return:
     '''
+    # colors 记录每种数据集 不同类别的颜色表，索引[0]是类别名，索引[1]是十六进制颜色值
     if data == 'Indian':
         colors = {
             1: ['CornNotill', '#53ab48'],
@@ -91,6 +92,7 @@ def draw_data(positions, predicts, data='Indian'):
     '''
     ImageColor模块使用方法见以下连接
     https://www.jianshu.com/p/f63dc8b5445d?utm_campaign=maleskine&utm_content=note&utm_medium=seo_notes&utm_source=recommendation
+    ImageColor.getrgb() 将十六进制颜色值转换为 RGB值
     '''
     for pos, pre in zip(positions, predicts):
         draw.point(pos, fill=ImageColor.getrgb(colors[pre][1]))     # 在对应索引位置处的像素上色
@@ -101,6 +103,7 @@ def draw_data(positions, predicts, data='Indian'):
 
 
 if __name__ == '__main__':
+    # 输入示例
     pos = [[1,3], [4,5], [6,6]]
     pre = [1,3,5]
     draw_data(pos, pre, data='Indian')
