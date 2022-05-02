@@ -29,3 +29,17 @@ THREAD = 10               # 启用多线程划分数据, 线程数
 random.seed(SEED)
 # ============ config =============
 ```
+
+## draw_data.py
+`像素级分类，按照每个像素的类别对背景图像进行上色`
+
+本例中的数据输入方式按照 __main__中给出的示例进行输入
+```python
+positions = [
+    [x1,y1],
+    [x2,y2],
+    ...
+]   # 原像素的坐标位置
+
+predictions = [class_id1, class_id2, ...]   # 预测类别的标签
+```
