@@ -14,7 +14,7 @@ def colors_per_class(data='Indian'):
     :return:
     '''
     # colors 记录每种数据集 不同类别的颜色表，索引[0]是类别名，索引[1]是十六进制颜色值
-        if data == 'Indian':
+    if data == 'Indian':
         colors = {
             # 0: ['others', '#000000'],
             0: ['CornNotill', '#4fab49'],
